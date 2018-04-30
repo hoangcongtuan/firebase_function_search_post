@@ -35,9 +35,52 @@ exports.searchTBChung = functions.https.onRequest((req, res) => {
     })
 })
 
-exports.getTBChung = functions.https.onRequest((req, res) => {
-    ref = admin.database().ref('/chung/data');
+exports.searchPost = functions.https.onRequest((req, res) => {
+    category = req.query.category
+    if (category === 'chung')
+        ref = admin.database().ref('/chung/data')
+    else if (category === 'hocphan')
+        ref = admin.database().ref('/lop_hoc_phan/data')
+    text = req.query.text
+
+    if (!text || !category) {
+        res.status(401)
+        return res.send("No enough parameter!")
+    }
+
+    text = text.toLowerCase();
+    result = []
+    return ref.once('value', snapshot => {
+        i = 0;
+        snapshot.forEach(element => {
+            raw = element.child('content').val()
+            raw += ' ' + element.child('day').val() + ' ' + element.child('event').val();
+            raw = raw.toLowerCase()
+            if (raw.indexOf(text) == -1) {
+                return;
+            }
+            //result[i] = element.child('key').val()
+            result.push(element.child('key').val())
+            i++
+        });
+
+        return res.send(result)
+    })
+})
+
+exports.getPost = functions.https.onRequest((req, res) => {
+
     const key = req.query.key
+    const category = req.query.category;
+    if (!key || !category) {
+        res.status(401)
+        return res.send("not enough parameter!")
+    }
+
+    if (category === 'chung')
+        ref = admin.database().ref('/chung/data');
+    else if (category === 'hocphan')
+        ref = admin.database().ref('/lop_hoc_phan/data')
     result = {
 
     }
