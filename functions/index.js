@@ -23,7 +23,7 @@ exports.searchTBChung = functions.https.onRequest((req, res) => {
             raw = element.child('content').val()
             raw += ' ' + element.child('day').val() + ' ' + element.child('event').val();
             raw = raw.toLowerCase()
-            if (raw.indexOf(text) == -1) {
+            if (raw.indexOf(text) === -1) {
                 return;
             }
             //result[i] = element.child('key').val()
@@ -56,7 +56,7 @@ exports.searchPost = functions.https.onRequest((req, res) => {
             raw = element.child('content').val()
             raw += ' ' + element.child('day').val() + ' ' + element.child('event').val();
             raw = raw.toLowerCase()
-            if (raw.indexOf(text) == -1) {
+            if (raw.indexOf(text) === -1) {
                 return;
             }
             //result[i] = element.child('key').val()
@@ -92,5 +92,4 @@ exports.getPost = functions.https.onRequest((req, res) => {
         return res.send(result)
     })
 })
-
 
