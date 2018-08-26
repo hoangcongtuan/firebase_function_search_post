@@ -8,9 +8,6 @@ admin.initializeApp(functions.config().firebase);
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello from Firebaseabc!");
-});
 
 exports.searchTBChung = functions.https.onRequest((req, res) => {
     ref = admin.database().ref('/chung/data');
@@ -35,6 +32,12 @@ exports.searchTBChung = functions.https.onRequest((req, res) => {
     })
 })
 
+/**
+ * search post by text and category:
+ * @category: chung or hocphan
+ * @text: text to search
+ * -> return: JSON Array of key
+ */
 exports.searchPost = functions.https.onRequest((req, res) => {
     category = req.query.category
     if (category === 'chung')
@@ -68,6 +71,12 @@ exports.searchPost = functions.https.onRequest((req, res) => {
     })
 })
 
+/**
+ * Get post by post'key(hash) and category
+ * @key: post'hash
+ * @category: post category
+ * -> return: post
+ */
 exports.getPost = functions.https.onRequest((req, res) => {
 
     const key = req.query.key
